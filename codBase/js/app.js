@@ -1,5 +1,23 @@
 var teclas=0;
+var acum=0,rp=0;
+var sign=0;
 teclas=document.getElementsByClassName('tecla');
+function operation(dato) {
+  console.log(dato,sign);
+  switch (sign) {
+    case "0":
+    {
+    acum=dato;
+    console.log(acum,sign);
+  }
+      break;
+    default:
+
+  }
+}
+function cleandisplay() {
+  document.getElementById("display").innerHTML=0;
+}
 function ckeydwn(digit) {
 document.getElementById(digit).style="padding:7px";
 setTimeout(function () {
@@ -9,8 +27,34 @@ console.log(digit);
 writeondisplay(digit);
 }
 function writeondisplay(digit) {
-  if (digit<=9&&digit>=0) {
-    writenumber(digit);
+  if (digit=="on") {
+    acum=0;rp=0;
+    cleandisplay();
+  }
+  else {
+    if ((digit<=9&&digit>=0)||digit=="punto") {
+      if (digit=="punto") {
+        writenumber(".")
+      }
+      else {
+      writenumber(digit);
+      }
+    }
+    else {
+      switch (digit) {
+        case "mas":
+        {
+          var dato=document.getElementById("display").innerHTML;
+          cleandisplay();
+          console.log(dato);
+          sign="+";
+          operation(dato);
+        }
+          break;
+        default:
+
+      }
+    }
   }
 }
 function writenumber(digit) {
