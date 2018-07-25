@@ -1,12 +1,13 @@
 var teclas=0;
 var acum=0,rp=0;
 var signb=0, signa=0, eq=0, aux=0;
+var calculadora;
 teclas=document.getElementsByClassName('tecla');
 function asignarvalor(dato) {
-  acum=parseFloat(dato);
   if (signa!="=") {
     signb=signa;
   }
+  acum=parseFloat(dato);
 }
 function suma(dato) {
   if (signa!="=") {
@@ -93,16 +94,43 @@ function writeondisplay(digit) {
     cleandisplay();
   }
   else {
-    if ((digit<=9&&digit>=0)||digit=="punto") {
-      if (digit=="punto") {
-        writenumber(".")
-      }
+    if (digit<=9&&digit>=0) {
+      var x=document.getElementById("display").innerHTML
+
+      if (x.length<8) {
+        if(eq==0){acum=rp=signb=signa=eq=0;
+          writenumber(digit);
+        }
       else {
-      writenumber(digit);
-      }
+        writenumber(digit);
+      }}
     }
     else {
       switch (digit) {
+        case "punto":
+          {
+            var str=document.getElementById("display").innerHTML;
+            var x=document.getElementById("display").innerHTML
+
+            if (x.length<8){
+            if (eq==0) {
+              acum=rp=signb=signa=0;eq=1;
+              document.getElementById("display").innerHTML="0.";
+            }
+            else{
+              if (str.indexOf(".")==(-1)) {
+                document.getElementById("display").innerHTML=document.getElementById("display").innerHTML+"."}
+              }
+            }
+        }
+          break;
+          case "sign":
+            {
+              var sd=document.getElementById("display").innerHTML;
+              sd=Number(sd)*(-1);acum=sd;
+              document.getElementById("display").innerHTML=sd
+            }
+            break;
         case "mas":
         {
           var dato=document.getElementById("display").innerHTML;
@@ -144,13 +172,30 @@ function writeondisplay(digit) {
                   if (signa!="=") {
                     var dato=document.getElementById("display").innerHTML;
                     signa="=";aux=Number(dato);
-                    operationf(dato);rp=parseFloat(acum);
-                    document.getElementById("display").innerHTML=rp;
-                    eq=0;
+                    operationf(dato);rp=acum.toString()
+                    if (rp.length>8) {
+                      var strd=rp.slice(0,8);
+                      console.log(rp.length+strd+rp);acum=parseFloat(strd)
+                      document.getElementById("display").innerHTML=acum;
+                      eq=0;
+                    }
+                    else {
+
+                      document.getElementById("display").innerHTML=acum;
+                      eq=0;
+                    }
                   }
-                  else{operationf(aux);
+                  else{signa="=";rp=acum.toString()
+                    if (rp.length>8) {
+                      var strd=rp.slice(0,8);acum=parseFloat(strd)
+                    operationf(aux);
                       document.getElementById("display").innerHTML=acum;
                   eq=0;
+                }
+                else {signa="=";operationf(aux);
+                  document.getElementById("display").innerHTML=acum;
+              eq=0;
+                }
                   }
                 }
                   break;
@@ -166,7 +211,7 @@ function writenumber(digit) {
   if (digit==0&&num==0) {
   }
   else {
-    if (eq==0||num==0) {
+    if (eq==0||num=="0") {
       document.getElementById("display").innerHTML=digit;eq=1;
     }
     else {
@@ -183,4 +228,4 @@ function ckeypress() {
       ckeydwn(this.id);
   });}
 }
-ckeypress();
+calculadora=ckeypress()
